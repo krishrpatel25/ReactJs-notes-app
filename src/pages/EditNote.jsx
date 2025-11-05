@@ -18,54 +18,35 @@ const EditNote = () => {
   const { notes, updateNote } = useNotes();
 
   const note = notes.find((note) => note.id === parseInt(id));
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [notesData, setNotesData] = useState({
-    title: "",
-    description: "",
-  });
+  const [notesData, setNotesData] = useState({ title: "", content: "" });
 
   useEffect(() => {
     if (note) {
-      setTitle(note.title);
-      setContent(note.content);
       setNotesData({
-        description: note.description,
         title: note.title,
+        content: note.content,
       });
     }
   }, [note]);
 
   const handleUpdate = () => {
-    if (!title.trim() || !content.trim()) {
+    if (!notesData.title.trim() || !notesData.content.trim()) {
       toast.error("Title and Description cannot be empty!");
       return;
     }
-    updateNote(note.id, title, content);
+    updateNote(note.id, notesData.title, notesData.content);
     toast.success("Note updated!");
-
-    navigate("/"); // redirect back to Home
+    navigate("/"); // back to Home
   };
 
   const handleClear = () => {
-    setTitle("");
-    setContent("");
-    setNotesData({
-      title: "",
-      description: "",
-    });
+    setNotesData({ title: "", content: "" });
   };
 
   function handleChange(name, value) {
-    setNotesData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    setNotesData((prev) => ({ ...prev, [name]: value }));
   }
 
-  console.log("State", notesData);
   if (!note)
     return <p className="text-center mt-10 text-gray-500">Note not found!</p>;
 
@@ -85,23 +66,21 @@ const EditNote = () => {
                 required
               />
             </div>
-
             <div className="flex flex-col gap-2">
               <CardTitle>Description</CardTitle>
               <Textarea
                 placeholder="Type your note here"
-                value={notesData.description}
-                name="description"
+                value={notesData.content}
+                name="content"
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
               />
             </div>
           </div>
         </CardContent>
-
         <CardFooter className="flex gap-4 justify-end">
           <Button onClick={handleUpdate}>Update</Button>
-          <Button variant="outline" onClick={handleClear} required>
+          <Button variant="outline" onClick={handleClear}>
             Clear
           </Button>
         </CardFooter>
@@ -111,4 +90,3 @@ const EditNote = () => {
 };
 
 export default EditNote;
-  
