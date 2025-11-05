@@ -1,0 +1,82 @@
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useNotes } from "../contexts/NotesContext";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardTitle,
+  CardFooter,
+} from "../components/ui/card";
+
+const EditNote = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { notes, updateNote } = useNotes();
+
+  const note = notes.find((n) => n.id === parseInt(id));
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title);
+      setContent(note.content);
+    }
+  }, [note]);
+
+  const handleUpdate = () => {
+    updateNote(note.id, title, content);
+    navigate("/"); // redirect back to Home
+  };
+
+  const handleClear = () => {
+    setTitle("");
+    setContent("");
+  };
+
+  if (!note)
+    return <p className="text-center mt-10 text-gray-500">Note not found!</p>;
+
+  return (
+    <div className="max-w-2xl mx-auto mt-10 p-4">
+      <Card className="w-full max-w-2xl">
+        <CardContent>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <CardTitle>Title</CardTitle>
+              <Input
+                type="text"
+                placeholder="Enter title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <CardTitle>Description</CardTitle>
+              <Textarea
+                placeholder="Type your note here"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+        </CardContent>
+
+        <CardFooter className="flex gap-4 justify-end">
+          <Button onClick={handleUpdate}>Update</Button>
+          <Button variant="outline" onClick={handleClear} required>
+            Clear
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+};
+
+export default EditNote;

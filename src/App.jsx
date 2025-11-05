@@ -6,6 +6,7 @@ import Form from "./pages/Form";
 import View from "./pages/View";
 import { NoteProvider } from "./contexts/NotesContext";
 import { Toaster } from "sonner";
+import EditNote from "./pages/EditNote";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <Home /> },
       { path: "form", element: <Form /> },
-      { path: "form/:id", element: <Form /> },
+      { path: "edit/:id", element: <EditNote /> },
       { path: "view", element: <View /> },
       { path: "view/:id", element: <View /> },
     ],
