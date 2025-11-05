@@ -23,8 +23,6 @@ const Navbar = () => {
         >
           Home
         </Link>
-
-       
       </div>
 
       {/* Add Notes Button */}
