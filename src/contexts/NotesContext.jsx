@@ -5,10 +5,16 @@ export const NotesContext = createContext({});
 export const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
+  try {
     const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    setNotes(storedNotes);
-  }, []);
+    setNotes(Array.isArray(storedNotes) ? storedNotes : []);
+  } catch (error) {
+    console.error("Failed to load notes from localStorage:", error);
+    setNotes([]); // fallback to empty array
+  }
+}, []);
+
 
   const saveToLocal = (updatedNotes) => {
     setNotes(updatedNotes);
