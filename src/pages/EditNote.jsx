@@ -10,13 +10,14 @@ import {
   CardTitle,
   CardFooter,
 } from "../components/ui/card";
+import { toast } from "sonner";
 
 const EditNote = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { notes, updateNote } = useNotes();
 
-  const note = notes.find((n) => n.id === parseInt(id));
+  const note = notes.find((note) => note.id === parseInt(id));
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -28,7 +29,13 @@ const EditNote = () => {
   }, [note]);
 
   const handleUpdate = () => {
+    if (!title.trim() || !content.trim()) {
+      toast.error("Title and Description cannot be empty!");
+      return;
+    }
     updateNote(note.id, title, content);
+    toast.success("Note updated!");
+
     navigate("/"); // redirect back to Home
   };
 

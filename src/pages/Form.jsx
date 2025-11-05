@@ -30,6 +30,10 @@ const Form = () => {
     toast("Form cleared!");
   };
 
+  const handleView = (id) => {
+    navigate(`/view/${id}`, { state: { title, content } });
+  };
+
   return (
     <div className="flex justify-center items-start pt-16 px-4">
       <Card className="w-full max-w-2xl">
@@ -62,6 +66,9 @@ const Form = () => {
           <Button onClick={handleSubmit}>Submit</Button>
           <Button variant="outline" onClick={handleClear}>
             Clear
+          </Button>
+          <Button variant="outline" onClick={() => handleView("new")}>
+            View
           </Button>
         </CardFooter>
       </Card>
