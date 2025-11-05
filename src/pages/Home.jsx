@@ -6,6 +6,12 @@ const Home = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4 flex flex-col gap-6">
+      {notes.length === 0 && (
+        <p className="text-center text-gray-500">
+          No notes yet. Add one from the form!
+        </p>
+      )}
+
       {notes.map((note) => (
         <Card
           key={note.id}
