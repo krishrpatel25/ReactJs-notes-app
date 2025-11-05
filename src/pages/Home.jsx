@@ -36,7 +36,7 @@ const Home = () => {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="w-full flex flex-col justify-between bg-gradient-to-r from-[#141E30] to-[#243B55] border border-gray-700 shadow-lg break-words"
+          className="w-full flex flex-col justify-between bg-liner-to-r from-[#141E30] to-[#243B55] border border-gray-700 shadow-lg wrap-break-words"
         >
           <CardContent className="overflow-hidden">
             <CardTitle className="text-white text-2xl font-semibold">
