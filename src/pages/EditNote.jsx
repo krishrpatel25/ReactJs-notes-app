@@ -20,11 +20,19 @@ const EditNote = () => {
   const note = notes.find((note) => note.id === parseInt(id));
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [notesData, setNotesData] = useState({
+    title: "",
+    description: "",
+  });
 
   useEffect(() => {
     if (note) {
       setTitle(note.title);
       setContent(note.content);
+      setNotesData({
+        description: note.description,
+        title: note.title,
+      });
     }
   }, [note]);
 
@@ -42,8 +50,22 @@ const EditNote = () => {
   const handleClear = () => {
     setTitle("");
     setContent("");
+    setNotesData({
+      title: "",
+      description: "",
+    });
   };
 
+  function handleChange(name, value) {
+    setNotesData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }
+
+  console.log("State", notesData);
   if (!note)
     return <p className="text-center mt-10 text-gray-500">Note not found!</p>;
 
@@ -57,8 +79,9 @@ const EditNote = () => {
               <Input
                 type="text"
                 placeholder="Enter title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={notesData.title}
+                name="title"
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
               />
             </div>
@@ -67,8 +90,9 @@ const EditNote = () => {
               <CardTitle>Description</CardTitle>
               <Textarea
                 placeholder="Type your note here"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+                value={notesData.description}
+                name="description"
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
               />
             </div>
@@ -87,3 +111,4 @@ const EditNote = () => {
 };
 
 export default EditNote;
+  
