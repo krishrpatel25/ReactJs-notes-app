@@ -24,6 +24,11 @@ const Home = () => {
     deleteNote(id);
     toast.success("Note deleted!");
   };
+  const handleView = (note) => {
+    navigate(`/view/${note.id}`, {
+      state: { title: note.title, content: note.content },
+    });
+  };
 
   return (
     <div className="max-w-6xl mx-auto mt-10 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -36,7 +41,7 @@ const Home = () => {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="w-full flex flex-col justify-between bg-liner-to-r from-[#141E30] to-[#243B55] border border-gray-700 shadow-lg wrap-break-words"
+          className="w-full flex flex-col justify-between bg-gradient-to-r from-[#141E30] to-[#243B55] border border-gray-700 shadow-lg break-words"
         >
           <CardContent className="overflow-hidden">
             <CardTitle className="text-white text-2xl font-semibold">
@@ -52,7 +57,6 @@ const Home = () => {
             >
               Edit
             </Button>
-
             {/* AlertDialog for Delete */}
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -74,6 +78,10 @@ const Home = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            <Button variant="" onClick={() => handleView(note)}>
+              View
+            </Button>
+
           </CardFooter>
         </Card>
       ))}
