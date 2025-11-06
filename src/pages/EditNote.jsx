@@ -19,6 +19,7 @@ const EditNote = () => {
 
   const note = notes.find((note) => note.id === parseInt(id));
   const [notesData, setNotesData] = useState({ title: "", content: "" });
+  const [error, setError] = useState({ title: "", content: "" });
 
   useEffect(() => {
     if (note) {
@@ -34,6 +35,15 @@ const EditNote = () => {
       toast.error("Title and Description cannot be empty!");
       return;
     }
+
+    // if (error.title || error.content) {
+    //   return;
+    // } else {
+    //   updateNote(note.id, notesData.title, notesData.content);
+    //   toast.success("Note updated!");
+    //   navigate("/"); // back to Home
+    // }
+
     updateNote(note.id, notesData.title, notesData.content);
     toast.success("Note updated!");
     navigate("/"); // back to Home
@@ -45,6 +55,38 @@ const EditNote = () => {
 
   function handleChange(name, value) {
     setNotesData((prev) => ({ ...prev, [name]: value }));
+
+    if (name == "title") {
+      const regex = /^[a-zA-Z0-9 ]*$/;
+
+      if (!regex.test(value)) {
+        setError((prev) => ({
+          ...prev,
+          title: "Title cannot contain special characters.",
+        }));
+      } else if (value.length < 5 || value.length > 20) {
+        setError((prev) => ({
+          ...prev,
+          title: "Title must be between 5 and 20 characters.",
+        }));
+      } else {
+        setError((prev) => ({ ...prev, title: "" }));
+      }
+    } else if (name === "content") {
+      if (value.length < 10) {
+        setError((prev) => ({
+          ...prev,
+          content: "Description must be at least 10 characters.",
+        }));
+      } else if (value.length > 100) {
+        setError((prev) => ({
+          ...prev,
+          content: "Description must be less than 100 characters.",
+        }));
+      } else {
+        setError((prev) => ({ ...prev, content: "" }));
+      }
+    }
   }
 
   if (!note)
@@ -66,6 +108,9 @@ const EditNote = () => {
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
               />
+              {error.title && (
+                <p className="text-red-600 text-sm">{error.title}</p>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <CardTitle>Description</CardTitle>
@@ -77,6 +122,9 @@ const EditNote = () => {
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                 required
               />
+              {error.content && (
+                <p className="text-red-600 text-sm">{error.content}</p>
+              )}
             </div>
           </div>
         </CardContent>
@@ -84,6 +132,7 @@ const EditNote = () => {
           <Button
             className="rounded-l-full border-2 border-black"
             onClick={handleUpdate}
+            disabled={!!error.title || !!error.content || !title || !content}
           >
             Update
           </Button>
