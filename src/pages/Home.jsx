@@ -16,13 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
-const colors = [
-  "bg-yellow-100",
-  "bg-blue-100",
-  "bg-green-100",
-  "bg-pink-100",
-  "bg-purple-100",
-];
+
 
 const Home = () => {
   const { notes, deleteNote } = useNotes();
@@ -47,68 +41,80 @@ const Home = () => {
         </p>
       )}
 
-      {notes.map((note, index) => (
-        <Card
-          key={note.id}
-          className={`${
-            colors[index % colors.length]
-          } border border-gray-300 rounded-xl shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1 hover:rotate-1 relative flex flex-col justify-between`}
-        >
-          {/* Pin Emoji */}
-          <div className="absolute top-2 right-2 text-2xl select-none">📌</div>
+      {notes.map((note, index) => {
+        return (
+          <Card
+            key={note.id}
+            className={`bg-[#CBB3FF] border-2 border-black rounded-3xl  
+              transition-all transform 
+              relative flex flex-col justify-between p-6`}
+          >
+            {/* Pin Emoji */}
 
-          <CardContent className="overflow-hidden px-6 py-4">
-            <CardTitle className="text-gray-800 text-2xl font-semibold truncate">
-              {note.title}
-            </CardTitle>
-            <p className="mt-2 text-gray-700 whitespace-pre-wrap break-words">
-              {note.content}
-            </p>
-          </CardContent>
+            {/* Note Content */}
+            <CardContent className="overflow-hidden p-0">
+              <CardTitle className="text-xl font-bold truncate mb-2">
+                {note.title}
+              </CardTitle>
+              <p className="text-sm opacity-90 whitespace-pre-wrap break-words leading-relaxed">
+                {note.content}
+              </p>
+            </CardContent>
 
-          <CardFooter className="flex flex-wrap gap-3 justify-end px-6 py-4">
-            <Button
-              onClick={() => navigate(`/edit/${note.id}`)}
-              className="bg-white text-gray-800 hover:bg-gray-200 transition-colors"
-            >
-              Edit
-            </Button>
-
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
+            {/* Footer */}
+            <CardFooter className="flex justify-between items-center mt-6 p-0">
+              <div className="flex gap-2">
                 <Button
-                  variant="destructive"
-                  className="bg-red-600 hover:bg-red-700 text-white transition-colors"
+                  onClick={() => navigate(`/edit/${note.id}`)}
+                  size="sm"
+                  className="bg-black border-2 border-black text-white hover:bg-gray-800 rounded-full px-3 py-1"
                 >
-                  Delete
+                  Edit
                 </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    this note.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleDelete(note.id)}>
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
 
-            <Button
-              onClick={() => handleView(note)}
-              className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
-            >
-              View
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+                <AlertDialog className="bg-[#CBB3FF] border-2 border-black">
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 border-2 border-black text-white rounded-full px-3 py-1"
+                    >
+                      Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete this note.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="bg-black text-white border-2 border-black rounded-l-full">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-[#CBB3FF] border-2 border-black text-black rounded-r-full hover:bg-[#d5c5f8] "
+                        onClick={() => handleDelete(note.id)}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
+                <Button
+                  onClick={() => handleView(note)}
+                  size="sm"
+                  className="bg-white border-2 border-black text-black hover:bg-gray-200 rounded-full px-3 py-1"
+                >
+                  View
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
+        );
+      })}
     </div>
   );
 };
