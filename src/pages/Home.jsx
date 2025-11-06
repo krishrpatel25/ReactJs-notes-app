@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
-
-
 const Home = () => {
   const { notes, deleteNote } = useNotes();
   const navigate = useNavigate();
@@ -34,25 +32,30 @@ const Home = () => {
   };
 
   return (
+    
     <div className="max-w-7xl mx-auto mt-12 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {notes.length === 0 && (
         <p className="text-center text-gray-400 col-span-full text-lg">
           No notes yet. Click 'Add Note' to create one!
         </p>
+        
       )}
+      
 
-      {notes.map((note, index) => {
+      {notes.map((note) => {
         return (
+          
           <Card
             key={note.id}
-            className={`bg-[#CBB3FF] border-2 border-black rounded-3xl  
+            className="bg-[#CBB3FF] h-[250px] border-2 border-black rounded-3xl  
               transition-all transform 
-              relative flex flex-col justify-between p-6`}
+              relative flex flex-col justify-between p-6"
           >
+            
             {/* Pin Emoji */}
 
             {/* Note Content */}
-            <CardContent className="overflow-hidden p-0">
+            <CardContent className="p-0 max-h-32 overflow-y-auto  scrollbar-hidden">
               <CardTitle className="text-xl font-bold truncate mb-2">
                 {note.title}
               </CardTitle>
