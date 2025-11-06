@@ -17,6 +17,8 @@ const EditNote = () => {
   const navigate = useNavigate();
   const { notes, updateNote } = useNotes();
 
+  const isDirty = false;
+
   const note = notes.find((note) => note.id === parseInt(id));
   const [notesData, setNotesData] = useState({ title: "", content: "" });
   const [error, setError] = useState({ title: "", content: "" });
@@ -36,17 +38,13 @@ const EditNote = () => {
       return;
     }
 
-    // if (error.title || error.content) {
-    //   return;
-    // } else {
-    //   updateNote(note.id, notesData.title, notesData.content);
-    //   toast.success("Note updated!");
-    //   navigate("/"); // back to Home
-    // }
+    if (error.title || error.content) {
+      return;
+    }
 
     updateNote(note.id, notesData.title, notesData.content);
     toast.success("Note updated!");
-    navigate("/"); // back to Home
+    // navigate("/"); // back to Home
   };
 
   const handleClear = () => {
@@ -88,6 +86,9 @@ const EditNote = () => {
       }
     }
   }
+
+  const isButtonDisabled =
+    !!error.title || !!error.content || !notesData.title || !notesData.content;
 
   if (!note)
     return <p className="text-center mt-10 text-gray-500">Note not found!</p>;
@@ -132,7 +133,7 @@ const EditNote = () => {
           <Button
             className="rounded-l-full border-2 border-black"
             onClick={handleUpdate}
-            disabled={!!error.title || !!error.content || !title || !content}
+            disabled={isButtonDisabled} // ? ask gpt
           >
             Update
           </Button>
