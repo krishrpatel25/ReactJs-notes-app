@@ -52,12 +52,13 @@ const EditNote = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-4">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-2xl  bg-[#cbb3ff] border-2 border-black">
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <CardTitle>Title</CardTitle>
               <Input
+                className="bg-white border-2 border-black"
                 type="text"
                 placeholder="Enter title"
                 value={notesData.title}
@@ -69,6 +70,7 @@ const EditNote = () => {
             <div className="flex flex-col gap-2">
               <CardTitle>Description</CardTitle>
               <Textarea
+                className="bg-white border-2 border-black"
                 placeholder="Type your note here"
                 value={notesData.content}
                 name="content"
@@ -78,9 +80,18 @@ const EditNote = () => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex gap-4 justify-end">
-          <Button onClick={handleUpdate}>Update</Button>
-          <Button variant="outline" onClick={handleClear}>
+        <CardFooter className="flex gap-2 justify-end">
+          <Button
+            className="rounded-l-full border-2 border-black"
+            onClick={handleUpdate}
+          >
+            Update
+          </Button>
+          <Button
+            className="rounded-r-full border-2 border-black"
+            variant="outline"
+            onClick={handleClear}
+          >
             Clear
           </Button>
         </CardFooter>
