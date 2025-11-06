@@ -20,15 +20,20 @@ function View() {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
-      <Card className="w-full flex flex-col justify-between bg-gradient-to-r from-[#141E30] to-[#243B55] border border-gray-700 shadow-lg break-words">
+      <Card className="w-full flex flex-col justify-between bg-gradient-to-r bg-[#CBB3FF] border-2 border-black ">
         <CardContent>
-          <CardTitle className="text-white text-2xl font-semibold">
+          <CardTitle className=" text-black text-2xl font-semibold">
             {title}
           </CardTitle>
-          <p className="mt-2 text-white/90">{content}</p>
+          <p className="mt-2  text-black">{content}</p>
         </CardContent>
-        <div className="flex justify-end p-4">
-          <Button onClick={() => navigate(-1)}>Go back</Button>
+        <div className="flex justify-end px-6">
+          <Button
+            className=" bg-white rounded-full border-2 border-black text-black hover:bg-white/90"
+            onClick={() => navigate(-1)}
+          >
+            Go back
+          </Button>
         </div>
       </Card>
     </div>
