@@ -19,17 +19,20 @@ function View() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 px-4">
-      <Card className="w-full flex flex-col justify-between bg-gradient-to-r bg-[#CBB3FF] border-2 border-black ">
-        <CardContent>
-          <CardTitle className=" text-black text-2xl font-semibold">
+    <div className="min-h-screen flex justify-center items-start bg-gray-50 pt-10 px-4">
+      <Card className="bg-[#CBB3FF] w-full max-w-4xl shadow-xl rounded-2xl  border-2 border-black">
+        <CardContent className="max-h-[500px] overflow-y-auto p-6">
+          <CardTitle className="text-black text-3xl font-bold break-words">
             {title}
           </CardTitle>
-          <p className="mt-2  text-black">{content}</p>
+          <p className="mt-4 text-black  break-words whitespace-pre-wrap">
+            {content}
+          </p>
         </CardContent>
-        <div className="flex justify-end px-6">
+
+        <div className="flex justify-end px-6 pb-6">
           <Button
-            className=" bg-white rounded-full border-2 border-black text-black hover:bg-white/90"
+            className="bg-white rounded-full border-2 border-black text-black hover:bg-white/90"
             onClick={() => navigate(-1)}
           >
             Go back
