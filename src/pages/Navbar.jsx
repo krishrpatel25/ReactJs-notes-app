@@ -1,18 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   return (
     <nav className="h-[70px] w-full  px-5 border-b-2 border-black flex items-center justify-between  text-white">
       {/* Logo */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" onClick={() => navigate("/")}>
         <img
           src="/public/logo.png" // replace with your logo path
           alt="Notes App Logo"
           className="h-10 w-10 border-2 border-black rounded-full"
         />
-        <span className="text-black font-bold text-lg">Notes App</span>
+        <span className="text-black font-bold text-lg cursor-default">Notes App</span>
       </div>
 
       {/* Links */}
