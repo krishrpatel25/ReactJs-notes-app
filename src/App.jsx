@@ -7,6 +7,7 @@ import View from "./pages/View";
 import { NoteProvider } from "./contexts/NotesContext";
 import { Toaster } from "sonner";
 import EditNote from "./pages/EditNote";
+import RhfForm from "./pages/rhf/RhfForm";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "edit/:id", element: <EditNote /> },
       { path: "view", element: <View /> },
       { path: "view/:id", element: <View /> },
+      { path: "rhf", element: <RhfForm /> },
     ],
   },
 ]);
@@ -32,4 +34,3 @@ function App() {
 }
 
 export default App;
-

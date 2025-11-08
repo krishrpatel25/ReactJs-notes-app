@@ -17,50 +17,56 @@ const EditNote = () => {
   const navigate = useNavigate();
   const { notes, updateNote } = useNotes();
 
-  const isDirty = false;
-
   const note = notes.find((note) => note.id === parseInt(id));
   const [notesData, setNotesData] = useState({ title: "", content: "" });
   const [error, setError] = useState({ title: "", content: "" });
+  const [isDirty, setIsDirty] = useState(false); // ✅ boolean flag
+
+  function resetForm(data) {
+    // Some logic run karvu che
+    setNotesData({ ...data });
+  }
 
   useEffect(() => {
+    // const fetch
+    // const res = {} // some obj
     if (note) {
-      setNotesData({
+      resetForm({
         title: note.title,
         content: note.content,
+        ...res,
       });
+      // copy and paste all 10 lines here
     }
   }, [note]);
 
-  const handleUpdate = () => {
-    if (!notesData.title.trim() || !notesData.content.trim()) {
-      toast.error("Title and Description cannot be empty!");
-      return;
-    }
-
-    if (error.title || error.content) {
-      return;
-    }
-
-    updateNote(note.id, notesData.title, notesData.content);
-    toast.success("Note updated!");
-    // navigate("/"); // back to Home
-  };
-
-  const handleClear = () => {
-    setNotesData({ title: "", content: "" });
-  };
-
   function handleChange(name, value) {
-    setNotesData((prev) => ({ ...prev, [name]: value }));
+    setNotesData((prev) => {
+      const updated = { ...prev, [name]: value };
 
-    if (name == "title") {
+      // ✅ Check if user changed anything compared to original note
+      if (updated.title !== note.title || updated.content !== note.content) {
+        setIsDirty(true);
+      } else {
+        setIsDirty(false);
+      }
+
+      return updated;
+    });
+
+    // Validation
+    if (name === "title") {
       const regex = /^[a-zA-Z0-9 ]*$/;
 
       if (!regex.test(value)) {
         setError((prev) => ({
           ...prev,
           title: "Title cannot contain special characters.",
+        }));
+      } else if (value.trim().length === 0) {
+        setError((prev) => ({
+          ...prev,
+          title: "Title field is Required",
         }));
       } else if (value.length < 5 || value.length > 20) {
         setError((prev) => ({
@@ -87,17 +93,33 @@ const EditNote = () => {
     }
   }
 
-  const isButtonDisabled =
-    !!error.title || !!error.content || !notesData.title || !notesData.content;
+  const handleUpdate = () => {
+    if (error.title || error.content) {
+      return;
+    }
+
+    updateNote(note.id, notesData.title, notesData.content);
+    toast.success("Note updated!");
+    setIsDirty(false); // ✅ reset after update
+    // navigate("/");
+  };
+
+  const handleClear = () => {
+    resetForm({ title: "", content: "" });
+    setIsDirty(true); // clearing is also a change
+  };
 
   if (!note)
     return <p className="text-center mt-10 text-gray-500">Note not found!</p>;
 
+  const isButtonDisabled = !!error.title || !!error.content || !isDirty; // ✅ only enabled when dirty
+
   return (
     <div className="max-w-2xl mx-auto mt-10 p-4">
-      <Card className="w-full max-w-2xl  bg-[#cbb3ff] border-2 border-black">
+      <Card className="w-full max-w-2xl bg-[#cbb3ff] border-2 border-black">
         <CardContent>
           <div className="flex flex-col gap-6">
+            {/* Title */}
             <div className="flex flex-col gap-2">
               <CardTitle>Title</CardTitle>
               <Input
@@ -113,6 +135,8 @@ const EditNote = () => {
                 <p className="text-red-600 text-sm">{error.title}</p>
               )}
             </div>
+
+            {/* Description */}
             <div className="flex flex-col gap-2">
               <CardTitle>Description</CardTitle>
               <Textarea
@@ -129,11 +153,12 @@ const EditNote = () => {
             </div>
           </div>
         </CardContent>
+
         <CardFooter className="flex gap-2 justify-end">
           <Button
             className="rounded-l-full border-2 border-black"
             onClick={handleUpdate}
-            disabled={isButtonDisabled} // ? ask gpt
+            disabled={isButtonDisabled}
           >
             Update
           </Button>
