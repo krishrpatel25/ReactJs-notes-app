@@ -29,7 +29,7 @@ const EditNote = () => {
 
   useEffect(() => {
     // const fetch
-    // const res = {} // some obj
+    const res = {} // some obj
     if (note) {
       resetForm({
         title: note.title,
@@ -101,7 +101,7 @@ const EditNote = () => {
     updateNote(note.id, notesData.title, notesData.content);
     toast.success("Note updated!");
     setIsDirty(false); // ✅ reset after update
-    // navigate("/");
+    navigate("/");
   };
 
   const handleClear = () => {

@@ -13,16 +13,24 @@ const Navbar = () => {
           alt="Notes App Logo"
           className="h-10 w-10 border-2 border-black rounded-full"
         />
-        <span className="text-black font-bold text-lg cursor-default">Notes App</span>
+        <span className="text-black font-bold text-lg cursor-default">
+          Notes App
+        </span>
       </div>
 
       {/* Links */}
-      <div className="flex gap-8">
+      <div className="flex gap-3">
         <Link
           to="/"
           className="bg-[#CBB3FF] border-2 border-black text-black px-4 py-2 rounded-full hover:text-gray font-medium transition-colors"
         >
           Home
+        </Link>
+        <Link
+          to="/rhf"
+          className="bg-[#CBB3FF] border-2 border-black text-black px-4 py-2 rounded-full hover:text-gray font-medium transition-colors"
+        >
+          User Form
         </Link>
       </div>
 
