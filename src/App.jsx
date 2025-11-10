@@ -8,6 +8,8 @@ import { NoteProvider } from "./contexts/NotesContext";
 import { Toaster } from "sonner";
 import EditNote from "./pages/EditNote";
 import RhfForm from "./pages/rhf/RhfForm";
+import Products from "./pages/product/Products";
+import ViewProduct from "./pages/product/ViewProduct";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { path: "view", element: <View /> },
       { path: "view/:id", element: <View /> },
       { path: "rhf", element: <RhfForm /> },
+      { path: "products", element: <Products /> },
+      { path: "products/:id", element: <ViewProduct /> },
     ],
   },
 ]);
