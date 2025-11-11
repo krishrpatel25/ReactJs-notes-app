@@ -201,11 +201,11 @@ function ViewProduct() {
                   <tbody className="divide-y-2 divide-gray-300">
                     <tr>
                       <td className="px-4 py-2 font-semibold">Model</td>
-                      <td className="px-4 py-2">{products.title}</td>
+                      <td className="px-4 py-2">{products?.title}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Category</td>
-                      <td className="px-4 py-2">{products.category}</td>
+                      <td className="px-4 py-2">{products?.category}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Color</td>
@@ -213,28 +213,36 @@ function ViewProduct() {
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Weight</td>
-                      <td className="px-4 py-2">0.25kg</td>
+                      <td className="px-4 py-2">{products?.weight}kg</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Dimensions</td>
-                      <td className="px-4 py-2">62 x 56 x 12 cm</td>
+                      <td className="px-4 py-2">
+                        {products?.dimensions?.width} x{" "}
+                        {products?.dimensions?.height} x{" "}
+                        {products?.dimensions?.depth} cm
+                      </td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Size</td>
                       <td className="px-4 py-2">XL, XXL, LG, SM, MD</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Guarantee</td>
-                      <td className="px-4 py-2">1 Year</td>
+                      <td className="px-4 py-2 font-semibold">
+                        Warranty
+                      </td>
+                      <td className="px-4 py-2">
+                        {products?.warrantyInformation}
+                      </td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Series</td>
-                      <td className="px-4 py-2">{products.title}</td>
+                      <td className="px-4 py-2">{products?.title}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold">Discount</td>
                       <td className="px-4 py-2">
-                        {products.discountPercentage}
+                        {products?.discountPercentage} %
                       </td>
                     </tr>
                   </tbody>
