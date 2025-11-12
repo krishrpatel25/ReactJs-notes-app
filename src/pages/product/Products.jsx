@@ -3,16 +3,45 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+("use client");
+
+import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+
 
 function Products() {
   const navigate = useNavigate();
   const [products, setproduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countProduct, setCountProduct] = useState(10);
 
   const getProductData = async () => {
     try {
       const res = await axios.get(
-        "https://dummyjson.com/products?limit=10&skip=0"
+        "https://dummyjson.com/products?limit=4&skip=0"
       );
       console.log("all product", res);
       setproduct(res.data.products);
@@ -65,12 +94,14 @@ function Products() {
           <h1 className="text-xl font-semibold text-gray-700">
             No products left!
           </h1>
+          
         </div>
       ) : (
         <div className="bg-[#CBB3FF] p-6 min-h-screen">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Products
-          </h1>
+            </h1>
+            
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((product) => (
               <div
@@ -130,6 +161,30 @@ function Products() {
               </div>
             ))}
           </div>
+
+          {/* pagination  */}
+
+          <div className=" flex justify-between items-center">
+            <DropDown />
+            <div className="pt-6">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious href="#" />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#">1</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext href="#" />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -137,3 +192,77 @@ function Products() {
 }
 
 export default Products;
+
+
+const frameworks = [
+  {
+    value: "10",
+    label: "10",
+  },
+  {
+    value: "20",
+    label: "20",
+  },
+  {
+    value: "30",
+    label: "30",
+  },
+  {
+    value: "40",
+    label: "40",
+  },
+  {
+    value: "50",
+    label: "50",
+  },
+];
+
+export function DropDown() {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("10");
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild >
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-[60px] justify-between"
+        >{value}
+         
+          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[80px] p-0">
+        <Command>
+          
+          <CommandList>
+            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandGroup>
+              {frameworks.map((framework) => (
+                <CommandItem
+                  className="w-[80px]"
+                  key={framework.value}
+                  value={framework.value}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <CheckIcon
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === framework.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {framework.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
