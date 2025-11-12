@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IoMdCheckmark } from "react-icons/io";
 import {
@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-function ProductAditionalInfo({products}) {
+function ProductAditionalInfo({ products }) {
   return (
     <div>
       <section className="pt-16">
@@ -190,7 +190,10 @@ function ProductAditionalInfo({products}) {
               <Carousel className="flex justify-center ">
                 <CarouselContent className="flex justify-center space-x-2 ">
                   {products?.reviews?.map((review, index) => (
-                    <CarouselItem key={index} className="flex justify-center  ">
+                    <CarouselItem
+                      key={index}
+                      className="flex justify-center w-[150px]"
+                    >
                       <div className="bg-[#CBB3FF] border-2 border-black rounded-lg p-8 mb-4 max-w-3xl mx-auto ">
                         <div className="bg-white p-4  rounded-2xl flex items-center gap-3 mb-2 text-black">
                           <div className="bg-gray-200 text-left rounded-full w-10 h-10 flex items-center justify-center font-bold text-gray-700">
@@ -233,8 +236,19 @@ function ProductAditionalInfo({products}) {
                   ))}
                 </CarouselContent>
 
-                <CarouselPrevious className="absolute left-[28rem] top-1/2 transform -translate-y-1/2" />
-                <CarouselNext className="absolute right-[28rem] top-1/2 transform -translate-y-1/2" />
+                <CarouselPrevious
+                  className="absolute left-2 md:left-10 lg:left-50 xl:left-100 top-1/2 transform -translate-y-1/2 
+             bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10"
+                >
+                  &lt;
+                </CarouselPrevious>
+
+                <CarouselNext
+                  className="absolute right-2 md:right-10 lg:right-50  xl:right-100 top-1/2 transform -translate-y-1/2 
+             bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10"
+                >
+                  &gt;
+                </CarouselNext>
               </Carousel>
             </TabsContent>
           </div>
@@ -244,4 +258,4 @@ function ProductAditionalInfo({products}) {
   );
 }
 
-export default ProductAditionalInfo
+export default ProductAditionalInfo;

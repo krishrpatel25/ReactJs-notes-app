@@ -1,28 +1,35 @@
 import { Button } from '@/components/ui/button';
-import React from 'react'
+import React, { useState } from 'react'
 
-function ProductDetailContent({products}) {
+function ProductDetailContent({ products }) {
+  const [selectImage, setSelectImage] = useState(products?.thumbnail || "");
   return (
     <div>
       <section>
-        <div className="flex flex-col gap-6 lg:flex-row items-center  lg:items-start  bg-gradient-to-b from-gray-50 to-white ">
+        <div className="flex flex-col gap-6 lg:flex-row items-center  lg:items-start  bg-gradient-to-b  to-white ">
           {/* Thumbnails */}
-          <div className="flex  border-none lg:flex-col gap-3  lg:order-1">
-            {products?.images?.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`product-${index}`}
-                className="bg-[#CBB3FF] p-2  border-2 border-black rounded-2xl w-20 h-20 object-cover "
-              />
-            ))}
+          <div className="flex border-none lg:flex-col gap-3 lg:order-1">
+            {products?.images ? (
+              products.images.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`product-${index}`}
+                  className="bg-[#CBB3FF] hover:bg-[#dacafc] p-2 border-2 border-black rounded-2xl w-20 h-20 object-cover cursor-pointer"
+                  onClick={() => setSelectImage(img)}
+                />
+              ))
+            ) : (
+                
+              <p>Loading...</p>
+            )}
           </div>
 
           {/* Main Image */}
           <div className="border-none flex justify-center items-center order-1 lg:order-2">
-            <div className="w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] flex justify-center items-center bg-gray-100 rounded-2xl overflow-hidden">
+            <div className="w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] flex justify-center items-center rounded-2xl overflow-hidden">
               <img
-                src={products?.thumbnail}
+                src={selectImage}
                 alt={products?.title}
                 className="w-full h-full object-contain transition-all duration-300"
               />

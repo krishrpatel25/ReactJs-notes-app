@@ -15,7 +15,7 @@ const ProductNotFound = () => {
         No Product Found
       </h1>
       <p className="text-gray-600 max-w-md mb-6">
-        We couldn’t find any product matching your search. Please try again or
+        We could not find any product matching your search. Please try again or
         explore other categories.
       </p>
 

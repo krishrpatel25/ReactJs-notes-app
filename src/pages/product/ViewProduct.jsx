@@ -13,7 +13,7 @@ function ViewProduct() {
   const fetchSingleProductData = async () => {
     try {
       const res = await axios.get(`https://dummyjson.com/products/${id}`);
-      console.log(res);
+      console.log("View product",res);
       setproduct(res.data);
     } catch (error) {
       console.log("fetching data error", error);
