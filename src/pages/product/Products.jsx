@@ -30,13 +30,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-
-
 function Products() {
   const navigate = useNavigate();
   const [products, setproduct] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [countProduct, setCountProduct] = useState(10);
 
   const getProductData = async () => {
     try {
@@ -94,14 +91,13 @@ function Products() {
           <h1 className="text-xl font-semibold text-gray-700">
             No products left!
           </h1>
-          
         </div>
       ) : (
         <div className="bg-[#CBB3FF] p-6 min-h-screen">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Products
-            </h1>
-            
+          </h1>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((product) => (
               <div
@@ -193,7 +189,6 @@ function Products() {
 
 export default Products;
 
-
 const frameworks = [
   {
     value: "10",
@@ -223,20 +218,20 @@ export function DropDown() {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild >
+      <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-[60px] justify-between"
-        >{value}
-         
+        >
+          {value}
+
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[80px] p-0">
         <Command>
-          
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
