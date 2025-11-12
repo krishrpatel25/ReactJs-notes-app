@@ -8,6 +8,7 @@ import ProductNotFound from "./ProductNotFound";
 function ViewProduct() {
   const { id } = useParams();
   const [products, setproduct] = useState("");
+  const [loading, setLoading] = useState(true)
 
   const fetchSingleProductData = async () => {
     try {
@@ -25,7 +26,13 @@ function ViewProduct() {
     fetchSingleProductData();
   }, [id]);
   
-
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center min-h-[70vh]">
+          <p className="text-gray-500 animate-pulse">Loading...</p>
+        </div>
+      );
+    }
 
   return (
     <div className="p-16 ">
