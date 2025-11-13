@@ -34,15 +34,30 @@ function Products() {
   const navigate = useNavigate();
   const [products, setproduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [limit, setLimit] = React.useState(10); // <-- dropdown value
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const getProductData = async () => {
+  const getProductData = async (value) => {
     try {
+      const skip = (page - 1) * value; // calculate skip using current page and new limit
       const res = await axios.get(
-        "https://dummyjson.com/products?limit=4&skip=0"
+        `https://dummyjson.com/products?limit=${value}&skip=${skip}`
       );
+
       console.log("all product", res);
+      const total = res.data.total;
+      const newTotalPages = Math.ceil(total / value); // calculate total pages based on new limit
+      setTotalPages(newTotalPages);
+
+      // If current page is greater than total pages, redirect to last page
+      if (page > newTotalPages) {
+        setPage(newTotalPages); // triggers useEffect to fetch correct data
+        return;
+      }
+
       setproduct(res.data.products);
-      console.log(products);
+      console.log(res.data.products);
     } catch (error) {
       console.log(error);
     } finally {
@@ -51,8 +66,8 @@ function Products() {
   };
 
   useEffect(() => {
-    getProductData();
-  }, []);
+    getProductData(limit, page);
+  }, [limit, page]);
 
   const handleViewProduct = (id) => {
     navigate(`/products/${id}`);
@@ -97,7 +112,6 @@ function Products() {
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Products
           </h1>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((product) => (
               <div
@@ -160,26 +174,84 @@ function Products() {
 
           {/* pagination  */}
 
-          <div className=" flex justify-between items-center">
-            <DropDown />
-            <div className="pt-6">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                  </PaginationItem>
+          <div className="flex justify-between items-center p-6">
+            {/* dropdown  */}
+            <DropDown value={limit} setValue={setLimit} />
+            {/* pagination */}
+            <Pagination>
+              <PaginationContent>
+                {/* Previous Button */}
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                    disabled={page === 1}
+                  />
+                </PaginationItem>
+
+                {/* First Page */}
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    isActive={page === 1}
+                    onClick={() => setPage(1)}
+                  >
+                    1
+                  </PaginationLink>
+                </PaginationItem>
+
+                {/* Left Ellipsis */}
+                {page > 3 && totalPages > 5 && (
                   <PaginationItem>
                     <PaginationEllipsis />
                   </PaginationItem>
+                )}
+
+                {/* Middle Pages → current ±1 */}
+                {Array.from({ length: 3 }, (_, i) => {
+                  const pageNum = page - 1 + i; // show previous, current, next
+                  if (pageNum <= 1 || pageNum >= totalPages) return null; // skip first/last
+                  return (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        href="#"
+                        isActive={page === pageNum}
+                        onClick={() => setPage(pageNum)}
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+
+                {/* Right Ellipsis */}
+                {page < totalPages - 2 && totalPages > 5 && (
                   <PaginationItem>
-                    <PaginationNext href="#" />
+                    <PaginationEllipsis />
                   </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
+                )}
+
+                {/* Last Page */}
+                {totalPages > 1 && (
+                  <PaginationItem>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === totalPages}
+                      onClick={() => setPage(totalPages)}
+                    >
+                      {totalPages}
+                    </PaginationLink>
+                  </PaginationItem>
+                )}
+
+                {/* Next Button */}
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                    disabled={page === totalPages}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       )}
@@ -212,18 +284,17 @@ const frameworks = [
   },
 ];
 
-export function DropDown() {
+export function DropDown({ value, setValue }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("10");
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} className="p-6">
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[60px] justify-between"
+          className="w-[80px] justify-between"
         >
           {value}
 
@@ -237,7 +308,6 @@ export function DropDown() {
             <CommandGroup>
               {frameworks.map((framework) => (
                 <CommandItem
-                  className="w-[80px]"
                   key={framework.value}
                   value={framework.value}
                   onSelect={(currentValue) => {

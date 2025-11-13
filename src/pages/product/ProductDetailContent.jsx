@@ -61,7 +61,7 @@ function ProductDetailContent({ products }) {
           </div>
         </div>
       </section>
-      ;
+      
     </div>
   );
 }
