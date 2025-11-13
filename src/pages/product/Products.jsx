@@ -180,9 +180,17 @@ function DropDown({ value, setValue }) {
 
 // ----------------------- SEARCH COMPONENT -----------------------
 
-function ProductFilter() {
-  const [search, setSearch] = useState();
+function ProductFilter({ products }) {
+  const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
+
+  useEffect(() => {
+    const filtered = products.filter((product) =>
+      product.title?.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+    console.log(filteredProducts);
+  }, [search, products, setFilteredProducts]);
 
   return (
     <div className="flex justify-end gap-2 p-2">
@@ -195,15 +203,6 @@ function ProductFilter() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-
-      {/* search product  */}
-      {/* <div>
-        <Input
-          type="text"
-          placeholder="search..."
-          className="bg-white border-2 border-black focus:border-g"
-        />
-      </div> */}
     </div>
   );
 }
@@ -273,14 +272,14 @@ function Products() {
         </h1>
       </div>
       {/* search bars */}
-      <ProductFilter />
+      <ProductFilter products={products} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <div
             key={product.id}
             onClick={() => handleViewProduct(product.id)}
-            className="bg-white  shadow-md border border-gray-200 hover:shadow-xl transition-all transform "
+            className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
           >
             <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
               <img
