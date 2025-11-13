@@ -27,6 +27,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
+import { FaWindowClose } from "react-icons/fa";
 
 // ----------------------- PAGINATION COMPONENT -----------------------
 function PaginationComponent({ page, setPage, totalPages }) {
@@ -178,8 +179,6 @@ function DropDown({ value, setValue }) {
   );
 }
 
-
-
 // ----------------------- PRODUCTS COMPONENT -----------------------
 function Products() {
   const navigate = useNavigate();
@@ -188,7 +187,7 @@ function Products() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-
+  const [search, setSearch] = useState(""); // search input state
   const getProductData = async (limit) => {
     try {
       const skip = (page - 1) * limit;
@@ -237,6 +236,14 @@ function Products() {
     );
   }
 
+  const filteredProducts = products.filter((product) =>
+    product.title?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  function handleClear() {
+    setSearch("");
+  }
+
   return (
     <div className="bg-[#CBB3FF] py-6 px-20 min-h-screen">
       <div>
@@ -245,65 +252,90 @@ function Products() {
         </h1>
       </div>
       {/* search bars */}
+      <div className="flex justify-end gap-2 p-2">
+        <div className="flex gap-3">
+          <Input
+            type="text"
+            placeholder="filter"
+            className="bg-white border-2 border-black focus:border-g"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search.length > 0 && (
+            <Button
+              onClick={handleClear}
+              className="bg-red-600 hover:bg-red-600 "
+            >
+              <FaWindowClose className=" text-white" />
+            </Button>
+          )}
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            onClick={() => handleViewProduct(product.id)}
-            className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
-          >
-            <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="w-50 h-50 pt-6 object-cover"
-              />
-            </div>
-            <div className="p-6 flex flex-col gap-2">
-              <h2 className="text-md font-semibold text-gray-900 truncate">
-                {product.title}
-              </h2>
-              <p className="text-gray-600 text-sm line-clamp-2">
-                {product.description}
-              </p>
-              <p className="flex items-center gap-1 text-yellow-500">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span key={i}>
-                    {i < Math.round(product.rating) ? (
-                      <img
-                        className="h-[20px]"
-                        src="/src/assets/star.png"
-                        alt="star"
-                      />
-                    ) : (
-                      <img
-                        className="h-[20px]"
-                        src="/src/assets/starEmpty.png"
-                        alt="empty star"
-                      />
-                    )}
-                  </span>
-                ))}
-              </p>
-              <div className="flex justify-between items-center">
-                <p className="text-gray-800 text-2xl font-bold mt-1">
-                  ${product.price}
+      {filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              onClick={() => handleViewProduct(product.id)}
+              className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
+            >
+              <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
+                <img
+                  src={product.images[0]}
+                  alt={product.title}
+                  className="w-50 h-50 pt-6 object-cover"
+                />
+              </div>
+              <div className="p-6 flex flex-col gap-2">
+                <h2 className="text-md font-semibold text-gray-900 truncate">
+                  {product.title}
+                </h2>
+                <p className="text-gray-600 text-sm line-clamp-2">
+                  {product.description}
                 </p>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteProduct(product.id);
-                  }}
-                  className="bg-red-600 text-white hover:bg-red-700"
-                >
-                  Delete
-                </Button>
+                <p className="flex items-center gap-1 text-yellow-500">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span key={i}>
+                      {i < Math.round(product.rating) ? (
+                        <img
+                          className="h-[20px]"
+                          src="/src/assets/star.png"
+                          alt="star"
+                        />
+                      ) : (
+                        <img
+                          className="h-[20px]"
+                          src="/src/assets/starEmpty.png"
+                          alt="empty star"
+                        />
+                      )}
+                    </span>
+                  ))}
+                </p>
+                <div className="flex justify-between items-center">
+                  <p className="text-gray-800 text-2xl font-bold mt-1">
+                    ${product.price}
+                  </p>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteProduct(product.id);
+                    }}
+                    className="bg-red-600 text-white hover:bg-red-700"
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="w-full h-[392px] pt-29 text-center items-center ">
+          <h1>No product found!! try on another page!!</h1>
+        </div>
+      )}
 
       {/* Dropdown and Pagination */}
       <div className="flex justify-between items-center py-6">
