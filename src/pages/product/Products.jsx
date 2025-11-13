@@ -178,34 +178,7 @@ function DropDown({ value, setValue }) {
   );
 }
 
-// ----------------------- SEARCH COMPONENT -----------------------
 
-function ProductFilter({ products }) {
-  const [search, setSearch] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(products);
-
-  useEffect(() => {
-    const filtered = products.filter((product) =>
-      product.title?.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-    console.log(filteredProducts);
-  }, [search, products, setFilteredProducts]);
-
-  return (
-    <div className="flex justify-end gap-2 p-2">
-      <div>
-        <Input
-          type="text"
-          placeholder="filter"
-          className="bg-white border-2 border-black focus:border-g"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-    </div>
-  );
-}
 
 // ----------------------- PRODUCTS COMPONENT -----------------------
 function Products() {
@@ -272,7 +245,6 @@ function Products() {
         </h1>
       </div>
       {/* search bars */}
-      <ProductFilter products={products} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
