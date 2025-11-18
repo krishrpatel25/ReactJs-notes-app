@@ -29,6 +29,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { FaWindowClose } from "react-icons/fa";
 
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
 // ----------------------- PAGINATION COMPONENT -----------------------
 function PaginationComponent({ page, setPage, totalPages }) {
   return (
@@ -189,6 +199,7 @@ function Products() {
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState(""); // first search filter
   const [apiSearch, setApiSearch] = useState(""); //second search filter
+
   const getProductData = async (limit) => {
     try {
       const skip = (page - 1) * limit;
@@ -213,9 +224,30 @@ function Products() {
     }
   };
 
+  const fetchApiSearch = async () => {
+    try {
+      if (!apiSearch || apiSearch.trim() === 0) {
+        return;
+      }
+      const res = await axios.get(
+        `https://dummyjson.com/products/search?q=${apiSearch}`
+      );
+      setProduct(res.data.products);
+      setTotalPages(Math.ceil(res.data.total / limit));
+      setPage(1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getProductData(limit);
   }, [limit, page]);
+
+  useEffect(() => {
+    const dSearch = debounce(fetchApiSearch, 500);
+    dSearch();
+  }, [apiSearch]);
 
   const handleViewProduct = (id) => navigate(`/products/${id}`);
 
