@@ -15,7 +15,7 @@ function ProductAditionalInfo({ products }) {
       <section className="pt-16">
         {/* Information buttons  */}
         <Tabs defaultValue="Description" className="w-full">
-          <TabsList className=" flex flex-row w-full gap-10 bg-white border-gray-300 w-full border-b-2 rounded-none">
+          <TabsList className="w-full h-[150px]  bg-white border-gray-300 w-full border-b-2 rounded-none flex-col md: flex md:flex-row md:gap-10 md:h-[36px] ">
             <TabsTrigger
               className="rounded-none text-gray-500 bg-white
                data-[state=active]:font-semibold
@@ -57,126 +57,108 @@ function ProductAditionalInfo({ products }) {
           </TabsList>
 
           {/* description  */}
-          <div className="text-center items-center justify-center w-full py-8">
+          <div className="w-full py-6">
+            {/* Description */}
             <TabsContent value="Description" className="w-full">
-              <p className="text-left text-gray-500">
+              <p className="text-gray-500 text-sm sm:text-base lg:text-lg leading-relaxed">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-                sed aut dolorem placeat! Recusandae, voluptate inventore
-                repellat sequi, dolor quas ut tenetur perferendis voluptas
-                praesentium voluptates repudiandae eius accusantium nostrum!
-                Repellat ab exercitationem cum doloribus assumenda dignissimos
-                hic eveniet debitis maiores, esse fuga corporis reprehenderit!
-                Iusto, consequatur. Officia quibusdam eos exercitationem vitae
-                eligendi libero iure aliquid voluptatibus autem, blanditiis
-                adipisci.
+                sed aut dolorem placeat!
               </p>
 
-              <ul className="pt-4">
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Quis adipisci.
-                    </span>
-                  </div>
-                </li>
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Necessitatibus, eius laudantium maxime iste.
-                    </span>
-                  </div>
-                </li>
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Quos corporis quibusdam assumenda eligendi non ratione.
-                    </span>
-                  </div>
-                </li>
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Lorem ipsum dolor sit amet.
-                    </span>
-                  </div>
-                </li>
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Dicta, nobis.
-                    </span>
-                  </div>
-                </li>
-                <li className="pt-2">
-                  <div className="flex items-center gap-4">
-                    <IoMdCheckmark />
-                    <span className="text-left text-gray-500">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing.
-                    </span>
-                  </div>
-                </li>
-                <p className="text-left text-gray-500 pt-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Sequi, ex commodi? Sit perspiciatis eos officia ullam,
-                  sapiente eaque! Odit aspernatur repellat nobis? Magnam
-                  voluptatem at omnis, cum debitis similique dicta?
-                </p>
+              <ul className="pt-4 flex flex-col gap-3">
+                {[
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis adipisci.",
+                  "Necessitatibus, eius laudantium maxime iste.",
+                  "Quos corporis quibusdam assumenda eligendi non ratione.",
+                  "Lorem ipsum dolor sit amet.",
+                  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta, nobis.",
+                  "Lorem ipsum, dolor sit amet consectetur adipisicing.",
+                ].map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 text-gray-500 text-sm sm:text-base"
+                  >
+                    <IoMdCheckmark className="mt-1 text-green-500" />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </TabsContent>
 
             {/* Additional Information */}
-            <TabsContent value="info" className=" w-full ">
-              <div className="overflow-x-auto ">
-                <table className="w-full border-collapse border-2  border-gray-300 text-left">
+            <TabsContent value="info" className="w-full">
+              <div className="w-full overflow-visible">
+                <table className="w-full table-auto border-collapse border-2 border-gray-300 text-left text-sm sm:text-base">
                   <tbody className="divide-y-2 divide-gray-300">
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Model</td>
-                      <td className="px-4 py-2">{products?.title}</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Model
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
+                        {products?.title}
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Category</td>
-                      <td className="px-4 py-2">{products?.category}</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Category
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
+                        {products?.category}
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Color</td>
-                      <td className="px-4 py-2">Black</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Color
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">Black</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Weight</td>
-                      <td className="px-4 py-2">{products?.weight}kg</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Weight
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
+                        {products?.weight}kg
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Dimensions</td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Dimensions
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
                         {products?.dimensions?.width} x{" "}
                         {products?.dimensions?.height} x{" "}
                         {products?.dimensions?.depth} cm
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Size</td>
-                      <td className="px-4 py-2">XL, XXL, LG, SM, MD</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Size
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
+                        XL, XXL, LG, SM, MD
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Warranty</td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Warranty
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
                         {products?.warrantyInformation}
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Series</td>
-                      <td className="px-4 py-2">{products?.title}</td>
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Series
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
+                        {products?.title}
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-semibold">Discount</td>
-                      <td className="px-4 py-2">
+                      <td className="px-2 sm:px-4 py-2 font-semibold break-words">
+                        Discount
+                      </td>
+                      <td className="px-2 sm:px-4 py-2 break-words">
                         {products?.discountPercentage} %
                       </td>
                     </tr>
@@ -185,17 +167,17 @@ function ProductAditionalInfo({ products }) {
               </div>
             </TabsContent>
 
-            {/* reviews section  */}
-            <TabsContent value="reviews" className=" w-full ">
-              <Carousel className="flex justify-center ">
-                <CarouselContent className="flex justify-center space-x-2 ">
+            {/* Reviews */}
+            <TabsContent value="reviews" className="w-full">
+              <Carousel className="flex justify-center overflow-x-auto ">
+                <CarouselContent className="flex  space-x-2">
                   {products?.reviews?.map((review, index) => (
                     <CarouselItem
                       key={index}
-                      className="flex justify-center w-[150px]"
+                      className="flex justify-center w-[250px] sm:w-[200px] xs:w-[150px] flex-shrink-0"
                     >
-                      <div className="bg-[#CBB3FF] border-2 border-black rounded-lg p-8 mb-4 max-w-3xl mx-auto ">
-                        <div className="bg-white p-4  rounded-2xl flex items-center gap-3 mb-2 text-black">
+                      <div className="bg-[#CBB3FF] border-2 border-black rounded-lg p-2 sm:p-6 md:p-8 mb-4 max-w-full mx-auto">
+                        <div className="bg-white p-3 sm:p-4 rounded-2xl flex items-center gap-3 mb-2 text-black">
                           <div className="bg-gray-200 text-left rounded-full w-10 h-10 flex items-center justify-center font-bold text-gray-700">
                             {review.rating}
                           </div>
@@ -210,11 +192,11 @@ function ProductAditionalInfo({ products }) {
                         </div>
 
                         {/* Rating */}
-                        <div className="flex pt-4 items-center mb-2">
+                        <div className="flex pt-2 sm:pt-4 items-center mb-2">
                           {Array.from({ length: 5 }, (_, i) => (
                             <svg
                               key={i}
-                              className={`w-5 h-5 ${
+                              className={`w-4 sm:w-5 h-4 sm:h-5 ${
                                 i < review.rating
                                   ? "text-yellow-400"
                                   : "text-gray-300"
@@ -228,7 +210,7 @@ function ProductAditionalInfo({ products }) {
                         </div>
 
                         {/* Comment */}
-                        <p className="text-gray-700 text-left mb-2">
+                        <p className="text-gray-700 text-left mb-2 text-sm sm:text-base">
                           {review.comment}
                         </p>
                       </div>
@@ -236,17 +218,11 @@ function ProductAditionalInfo({ products }) {
                   ))}
                 </CarouselContent>
 
-                <CarouselPrevious
-                  className="absolute left-2 md:left-10 lg:left-50 xl:left-100 top-1/2 transform -translate-y-1/2 
-             bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10"
-                >
+                <CarouselPrevious className="absolute left-0  md:left-10 lg:left-50 xl:left-100 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10">
                   &lt;
                 </CarouselPrevious>
 
-                <CarouselNext
-                  className="absolute right-2 md:right-10 lg:right-50  xl:right-100 top-1/2 transform -translate-y-1/2 
-             bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10"
-                >
+                <CarouselNext className="absolute right-0  md:right-10 lg:right-50 xl:right-100 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow hover:bg-gray-100 transition z-10">
                   &gt;
                 </CarouselNext>
               </Carousel>

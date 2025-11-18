@@ -35,7 +35,7 @@ function ViewProduct() {
     }
 
   return (
-    <div className="p-16 ">
+    <div className="p-4 md:p-16 ">
       {products ? (
         <>
           <ProductDetailContent products={products} />

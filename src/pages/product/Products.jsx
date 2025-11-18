@@ -187,7 +187,8 @@ function Products() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [search, setSearch] = useState(""); // search input state
+  const [search, setSearch] = useState(""); // first search filter
+  const [apiSearch, setApiSearch] = useState(""); //second search filter
   const getProductData = async (limit) => {
     try {
       const skip = (page - 1) * limit;
@@ -236,12 +237,20 @@ function Products() {
     );
   }
 
-  const filteredProducts = products.filter((product) =>
-    product.title?.toLowerCase().includes(search.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.title?.toLowerCase().includes(search.toLowerCase()) ||
+      product.description?.toLowerCase().includes(search.toLowerCase() ||
+      product.category?.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
   function handleClear() {
     setSearch("");
+  }
+
+  function handleClearApi() {
+    setApiSearch("");
   }
 
   return (
@@ -267,6 +276,20 @@ function Products() {
               className="bg-red-600 hover:bg-red-600 "
             >
               <FaWindowClose className=" text-white" />
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-3">
+          <Input
+            type="text"
+            placeholder="Search API (debounced)"
+            className="bg-white border-2 border-black focus:border-g"
+            value={apiSearch}
+            onChange={(e) => setApiSearch(e.target.value)}
+          />
+          {apiSearch && (
+            <Button className="bg-red-600" onClick={handleClearApi}>
+              <FaWindowClose className="text-white" />
             </Button>
           )}
         </div>
