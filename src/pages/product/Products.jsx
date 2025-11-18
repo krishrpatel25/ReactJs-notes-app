@@ -182,27 +182,30 @@ function DropDown({ value, setValue }) {
 // ----------------------- PRODUCTS COMPONENT -----------------------
 function Products() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [search, setSearch] = useState("");
-
-  const getProductData = async () => {
+  const [search, setSearch] = useState(""); // first search filter
+  const [apiSearch, setApiSearch] = useState(""); //second search filter
+  const getProductData = async (limit) => {
     try {
-      setLoading(true);
       const skip = (page - 1) * limit;
       const res = await axios.get(
         `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
       );
 
-      setProducts(res.data.products);
-      setFilteredProducts(res.data.products);
-
       const total = res.data.total;
-      setTotalPages(Math.ceil(total / limit));
+      const newTotalPages = Math.ceil(total / limit);
+      setTotalPages(newTotalPages);
+
+      if (page > newTotalPages) {
+        setPage(newTotalPages);
+        return; // wait for useEffect to refetch
+      }
+
+      setProduct(res.data.products);
     } catch (error) {
       console.log(error);
     } finally {
@@ -211,18 +214,8 @@ function Products() {
   };
 
   useEffect(() => {
-    getProductData();
+    getProductData(limit);
   }, [limit, page]);
-
-  useEffect(() => {
-    const filtered = products.filter(
-      (product) =>
-        product.title?.toLowerCase().includes(search.toLowerCase()) ||
-        product.description?.toLowerCase().includes(search.toLowerCase()) ||
-        product.category?.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [search, products]);
 
   const handleViewProduct = (id) => navigate(`/products/${id}`);
 
@@ -230,14 +223,11 @@ function Products() {
     try {
       await axios.delete(`https://dummyjson.com/products/${id}`);
       toast.success("Product deleted successfully!");
-      const newProducts = products.filter((p) => p.id !== id);
-      setProducts(newProducts);
+      setProduct((prev) => prev.filter((p) => p.id !== id));
     } catch (error) {
       toast.error("Failed to delete product!");
     }
   };
-
-  const handleClear = () => setSearch("");
 
   if (loading) {
     return (
@@ -247,6 +237,25 @@ function Products() {
     );
   }
 
+  const filteredProducts = products.filter(
+    (product) =>
+      product.title?.toLowerCase().includes(search.toLowerCase()) ||
+      product.description
+        ?.toLowerCase()
+        .includes(
+          search.toLowerCase() ||
+            product.category?.toLowerCase().includes(search.toLowerCase())
+        )
+  );
+
+  function handleClear() {
+    setSearch("");
+  }
+
+  function handleClearApi() {
+    setApiSearch("");
+  }
+
   return (
     <div className="bg-[#CBB3FF] py-6 px-20 min-h-screen">
       <div>
@@ -254,31 +263,48 @@ function Products() {
           Products
         </h1>
       </div>
-
-      {/* Search Input */}
-      <div className="flex justify-end gap-3 p-2 mb-4">
-        <Input
-          type="text"
-          placeholder="Search products..."
-          className="bg-white border-2 border-black focus:border-blue-500"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {search.length > 0 && (
-          <Button onClick={handleClear} className="bg-red-600 hover:bg-red-700">
-            <FaWindowClose className="text-white" />
-          </Button>
-        )}
+      {/* search bars */}
+      <div className="flex justify-end gap-2 p-2">
+        <div className="flex gap-3">
+          <Input
+            type="text"
+            placeholder="filter"
+            className="bg-white border-2 border-black focus:border-g"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search.length > 0 && (
+            <Button
+              onClick={handleClear}
+              className="bg-red-600 hover:bg-red-600 "
+            >
+              <FaWindowClose className=" text-white" />
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-3">
+          <Input
+            type="text"
+            placeholder="Search API (debounced)"
+            className="bg-white border-2 border-black focus:border-g"
+            value={apiSearch}
+            onChange={(e) => setApiSearch(e.target.value)}
+          />
+          {apiSearch && (
+            <Button className="bg-red-600" onClick={handleClearApi}>
+              <FaWindowClose className="text-white" />
+            </Button>
+          )}
+        </div>
       </div>
 
-      {/* Products Grid */}
       {filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               onClick={() => handleViewProduct(product.id)}
-              className="bg-white shadow-md border-gray-200 hover:shadow-xl transition-all transform cursor-pointer"
+              className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
             >
               <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
                 <img
@@ -332,12 +358,12 @@ function Products() {
           ))}
         </div>
       ) : (
-        <div className="w-full h-[392px] flex justify-center items-center">
-          <h1>No product found!! Try another page!!</h1>
+        <div className="w-full h-[392px] pt-29 text-center items-center ">
+          <h1>No product found!! try on another page!!</h1>
         </div>
       )}
 
-      {/* Dropdown + Pagination */}
+      {/* Dropdown and Pagination */}
       <div className="flex justify-between items-center py-6">
         <DropDown value={limit} setValue={setLimit} />
         <PaginationComponent
