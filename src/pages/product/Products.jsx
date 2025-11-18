@@ -245,6 +245,7 @@ function Products() {
     )
   );
 
+  
   function handleClear() {
     setSearch("");
   }
@@ -261,6 +262,8 @@ function Products() {
         </h1>
       </div>
       {/* search bars */}
+
+      {/* first search btn */}
       <div className="flex justify-end gap-2 p-2">
         <div className="flex gap-3">
           <Input
@@ -279,6 +282,8 @@ function Products() {
             </Button>
           )}
         </div>
+
+        {/* second search btn */}
         <div className="flex gap-3">
           <Input
             type="text"
