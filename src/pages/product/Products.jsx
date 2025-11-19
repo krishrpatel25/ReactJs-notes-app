@@ -342,6 +342,8 @@ function Products() {
               onClick={() => handleViewProduct(product.id)}
               className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
             >
+              
+
               <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
                 <img
                   src={product.images[0]}
@@ -349,10 +351,7 @@ function Products() {
                   className="w-50 h-50 pt-6 object-cover"
                 />
               </div>
-              <div className="p-6 gap-2 flex flex-col border rounded-xl shadow-sm bg-white w-full max-w-sm">
-                <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full">
-                  {product?.category || "No Category"}
-                </div>
+              <div className="p-6 flex flex-col gap-2">
                 <h2 className="text-md font-semibold text-gray-900 truncate">
                   {product.title}
                 </h2>
