@@ -20,7 +20,13 @@ function ProductDetailContent({ products }) {
                 />
               ))
             ) : (
-              <p>Loading...</p>
+              <div className="flex justify-center items-center py-10">
+                <div className="flex space-x-2">
+                  <div className="w-3 h-3 bg-purple-600 rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-purple-600 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+                  <div className="w-3 h-3 bg-purple-600 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
+                </div>
+              </div>
             )}
           </div>
 

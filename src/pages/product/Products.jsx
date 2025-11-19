@@ -266,8 +266,8 @@ function Products() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <p className="text-gray-500 animate-pulse">Loading...</p>
+      <div class="h-screen flex items-center justify-center">
+        <div class="w-32 h-32 bg-gray-200 rounded-xl animate-pulse"></div>
       </div>
     );
   }
@@ -289,47 +289,117 @@ function Products() {
 
   function handleClearApi() {
     setApiSearch("");
+    getProductData(limit);
   }
 
   return (
     <div className="bg-[#CBB3FF] py-6 px-20 min-h-screen">
-      <div>
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Products
-        </h1>
+      <div className="flex items-center justify-center py-6">
+        <span className="block w-full h-[2px] bg-black"></span>
+
+        <h1 className="text-3xl font-bold mx-4 text-gray-800">Products</h1>
+
+        <span className="block w-full h-[2px] bg-black"></span>
       </div>
+
       {/* search bars */}
-      <div className="flex w-full gap-2 p-2">
-        <div className="flex w-full gap-3">
-          <Input
+      <div className="flex w-full gap-4 py-4  rounded-2xl  ">
+        <div className="flex w-full items-center gap-3  bg-white rounded-2xl shadow-lg px-4 py-3 border border-gray-300  ">
+          {/* Search Icon (SVG) */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5  text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.75 3.75a7.5 7.5 0 0012.9 12.9z"
+            />
+          </svg>
+
+          <input
             type="text"
-            placeholder="Search product ..."
-            className="bg-white border-2 border-black focus:border-g"
+            placeholder="Search products..."
+            className="flex-1 border-0 focus:ring-0  focus:outline-none text-base"
             value={apiSearch}
             onChange={(e) => setApiSearch(e.target.value)}
           />
+
           {apiSearch && (
-            <Button className="bg-red-600" onClick={handleClearApi}>
-              <FaWindowClose className="text-white" />
-            </Button>
+            <button
+              onClick={handleClearApi}
+              className="text-red-500 hover:text-red-600 transition"
+            >
+              {/* Close Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           )}
         </div>
 
-        <div className="flex gap-3">
-          <Input
+        {/* Filter Box */}
+        <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-2xl border border-gray-300 ">
+          {/* Filter Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L14 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 018 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+            />
+          </svg>
+
+          <input
             type="text"
-            placeholder="filter"
-            className="bg-white border-2 border-black focus:border-g"
+            placeholder="Filter..."
+            className="flex-1 border-0 focus:ring-0 focus:outline-none text-base"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {search.length > 0 && (
-            <Button
+
+          {search && (
+            <button
               onClick={handleClear}
-              className="bg-red-600 hover:bg-red-600 "
+              className="text-red-500 hover:text-red-600 transition"
             >
-              <FaWindowClose className=" text-white" />
-            </Button>
+              {/* Close Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           )}
         </div>
       </div>
@@ -340,56 +410,73 @@ function Products() {
             <div
               key={product.id}
               onClick={() => handleViewProduct(product.id)}
-              className="bg-white  shadow-md  border-gray-200 hover:shadow-xl transition-all transform "
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden"
             >
-              
+              {/* Image Section */}
+              <div className="relative w-full h-56 bg-gray-100 flex items-center justify-center overflow-hidden">
+                {/* Category Badge on Image (Glossy) */}
+                <span
+                  className="absolute top-3 left-3 text-xs font-medium text-purple-700 
+      bg-white/40 backdrop-blur-md border border-white/50 
+      px-3 py-1 rounded-full shadow-sm"
+                >
+                  {product.category}
+                </span>
 
-              <div className="w-full h-50 flex justify-center items-center overflow-hidden object-cover rounded-t-xl">
                 <img
                   src={product.images[0]}
                   alt={product.title}
-                  className="w-50 h-50 pt-6 object-cover"
+                  className="h-full object-contain p-4"
                 />
               </div>
-              <div className="p-6 flex flex-col gap-2">
-                <h2 className="text-md font-semibold text-gray-900 truncate">
+
+              {/* Text Content */}
+              <div className="p-5 flex flex-col gap-3">
+                {/* Title */}
+                <h2 className="text-lg font-semibold text-gray-900 line-clamp-1">
                   {product.title}
                 </h2>
+
+                {/* Description */}
                 <p className="text-gray-600 text-sm line-clamp-2">
                   {product.description}
                 </p>
-                <p className="flex items-center gap-1 text-yellow-500">
+
+                {/* Rating */}
+                <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i}>
-                      {i < Math.round(product.rating) ? (
-                        <img
-                          className="h-[20px]"
-                          src="/src/assets/star.png"
-                          alt="star"
-                        />
-                      ) : (
-                        <img
-                          className="h-[20px]"
-                          src="/src/assets/starEmpty.png"
-                          alt="empty star"
-                        />
-                      )}
-                    </span>
+                    <img
+                      key={i}
+                      src={
+                        i < Math.round(product.rating)
+                          ? "/src/assets/star.png"
+                          : "/src/assets/starEmpty.png"
+                      }
+                      className="h-[18px]"
+                      alt="star"
+                    />
                   ))}
-                </p>
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-800 text-2xl font-bold mt-1">
+
+                  <span className="text-gray-500 text-sm ml-1">
+                    {product.rating.toFixed(1)}
+                  </span>
+                </div>
+
+                {/* Price + Delete */}
+                <div className="flex justify-between items-center pt-2">
+                  <p className="text-2xl font-bold text-gray-900">
                     ${product.price}
                   </p>
-                  <Button
+
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteProduct(product.id);
                     }}
-                    className="bg-red-600 text-white hover:bg-red-700"
+                    className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-all"
                   >
                     Delete
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
