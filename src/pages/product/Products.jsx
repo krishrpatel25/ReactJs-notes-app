@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -31,10 +31,10 @@ import { FaWindowClose } from "react-icons/fa";
 
 function debounce(func, delay) {
   let timeout;
-  return function (...args) {
+  return (...args) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      func.apply(this, args);
+      func(...args);
     }, delay);
   };
 }
@@ -224,29 +224,32 @@ function Products() {
     }
   };
 
-  const fetchApiSearch = async () => {
+  const fetchApiSearch = async (value) => {
     try {
-      if (!apiSearch || apiSearch.trim() === 0) {
-        return;
-      }
+      if (!value || value.trim() === "") return;
+
       const res = await axios.get(
-        `https://dummyjson.com/products/search?q=${apiSearch}`
+        `https://dummyjson.com/products/search?q=${value}`
       );
+
       setProduct(res.data.products);
       setTotalPages(Math.ceil(res.data.total / limit));
       setPage(1);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
+  const debouncedSearch = useCallback(
+    debounce((value) => fetchApiSearch(value), 500),
+    []
+  );
 
   useEffect(() => {
     getProductData(limit);
   }, [limit, page]);
 
   useEffect(() => {
-    const dSearch = debounce(fetchApiSearch, 500);
-    dSearch();
+    debouncedSearch(apiSearch);
   }, [apiSearch]);
 
   const handleViewProduct = (id) => navigate(`/products/${id}`);
@@ -296,7 +299,22 @@ function Products() {
         </h1>
       </div>
       {/* search bars */}
-      <div className="flex justify-end gap-2 p-2">
+      <div className="flex w-full gap-2 p-2">
+        <div className="flex w-full gap-3">
+          <Input
+            type="text"
+            placeholder="Search product ..."
+            className="bg-white border-2 border-black focus:border-g"
+            value={apiSearch}
+            onChange={(e) => setApiSearch(e.target.value)}
+          />
+          {apiSearch && (
+            <Button className="bg-red-600" onClick={handleClearApi}>
+              <FaWindowClose className="text-white" />
+            </Button>
+          )}
+        </div>
+
         <div className="flex gap-3">
           <Input
             type="text"
@@ -311,20 +329,6 @@ function Products() {
               className="bg-red-600 hover:bg-red-600 "
             >
               <FaWindowClose className=" text-white" />
-            </Button>
-          )}
-        </div>
-        <div className="flex gap-3">
-          <Input
-            type="text"
-            placeholder="Search API (debounced)"
-            className="bg-white border-2 border-black focus:border-g"
-            value={apiSearch}
-            onChange={(e) => setApiSearch(e.target.value)}
-          />
-          {apiSearch && (
-            <Button className="bg-red-600" onClick={handleClearApi}>
-              <FaWindowClose className="text-white" />
             </Button>
           )}
         </div>
@@ -345,7 +349,10 @@ function Products() {
                   className="w-50 h-50 pt-6 object-cover"
                 />
               </div>
-              <div className="p-6 flex flex-col gap-2">
+              <div className="p-6 gap-2 flex flex-col border rounded-xl shadow-sm bg-white w-full max-w-sm">
+                <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded-full">
+                  {product?.category || "No Category"}
+                </div>
                 <h2 className="text-md font-semibold text-gray-900 truncate">
                   {product.title}
                 </h2>
