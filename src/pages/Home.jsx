@@ -38,7 +38,6 @@ const Home = () => {
         <p className="text-center text-gray-400 col-span-full text-lg">
           No notes yet. Click 'Add Note' to create one!
         </p>
-        
       )}
       
 
