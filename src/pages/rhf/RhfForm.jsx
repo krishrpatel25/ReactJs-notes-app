@@ -231,7 +231,7 @@ const RhfForm = () => {
           </Button>
         </CardFooter>
       </Card>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </div>
   );
 };

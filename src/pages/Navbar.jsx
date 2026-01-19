@@ -35,7 +35,7 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link
+          {/* <Link
             to="/rhf"
             className="bg-[#CBB3FF] border-2 border-black text-black px-4 py-2 rounded-full hover:text-gray font-medium transition-colors"
           >
@@ -46,7 +46,7 @@ const Navbar = () => {
             className="bg-[#CBB3FF] border-2 border-black text-black px-4 py-2 rounded-full hover:text-gray font-medium transition-colors"
           >
             My Shop
-          </Link>
+          </Link> */}
           <Button className="bg-black hover:bg-gray-800 border-2 border-black rounded-full text-white">
             <Link to="/form">Add Notes</Link>
           </Button>
